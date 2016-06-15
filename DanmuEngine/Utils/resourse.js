@@ -5,10 +5,10 @@ var DEResourse = {
 				height:Image.height,
 				Base64Code:Image.Base64Code
 			};
-			DEGlobal.RESOURCES.IMAGE[Image.name] = data;
+			DEGlobal.RESOURCES.IMAGES[Image.name] = data;
 	},
 	createImage:function(Image){
-		var TargetImg = DEGlobal.RESOURCES.IMAGE[Image.name]
+		var TargetImg = DEGlobal.RESOURCES.IMAGES[Image.name]
 		bmd = loadBitmapData(TargetImg.width, TargetImg.height, TargetImg.Base64Code);
 		obj = createBitmap(bmd, Image.lifeTime, Image.parent);
 		obj.shape.x = Image.x;
