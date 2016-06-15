@@ -1,23 +1,33 @@
 var DEResourse = {
-	loadImage:function(Image){
-			var data = {
-				width:Image.width,
-				height:Image.height,
-				Base64Code:Image.Base64Code
-			};
-			var name = Image.name; 
-			DEGlobal.RESOURCES.IMAGES[name] = data;
+	loadImage:function(image){
+        var data = {
+            width:image.width,
+            height:image.height,
+            Base64Code:image.Base64Code
+        };
+        var name = image.name;
+        DEGlobal.RESOURCES.IMAGES[name] = data;
+
 	},
-	createImage:function(Image){
-		name = Image.name;
+	createImage:function(image){
+		var name = image.name;
 		var TargetImg = DEGlobal.RESOURCES.IMAGES[name];
-		bmd = loadBitmapData(TargetImg.width, TargetImg.height, TargetImg.Base64Code);
-		obj = createBitmap(bmd, Image.lifeTime, Image.parent);
-		obj.shape.x = Image.x;
-		obj.shape.y = Image.y;
-		obj.shape.alpha = (Image.alpha) ? 1:Image.alpha;
+        var bmd;
+        var raw = TargetImg.Base64Code;
+        if (DEGlobal.CACHE.BMD.hasOwnProperty(raw)) {
+            bmd = DEGlobal.CACHE.BMD[raw];
+        } else {
+            bmd = DEBitmapLoader.loadBitmapData(TargetImg.width, TargetImg.height, TargetImg.Base64Code);
+            DEGlobal.CACHE.BMD[raw] = bmd;
+        }
+        var obj = {};
+		obj.shape = DEBitmapLoader.createBitmap(bmd, image.lifeTime, (image.scale) ? image.scale:1, image.parent);
+		obj.shape.x = image.x;
+		obj.shape.y = image.y;
+		obj.shape.alpha = (image.alpha) ? image.alpha:1;
 		return obj;
 	}
 };
 //loadImage用法：DEResourse.loadImage({name:"图片昵称",width:图片的宽度,height:图片的高度,Base64Code:"图片的Base64码"});
-//createImage用法：DEResourse.createImage({name:"图片昵称",x:图片相对于父元素的横坐标,y:图片相对于父元素的纵坐标,lifeTime:图片持续时间,parent:图片的父元素,alpha:选填，图片透明度0为透明1为不透明，0.5为半透明});
+//createImage用法：DEResourse.createImage({name:"图片昵称",x:图片相对于父元素的横坐标,y:图片相对于父元素的纵坐标,scale:图片缩放比例,默认为1,lifeTime:图片持续时间,parent:图片的父元素,alpha:选填，图片透明度0为透明1为不透明，0.5为半透明});
+
