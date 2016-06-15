@@ -6,7 +6,7 @@ var DEResourse = {
 				Base64Code:Image.Base64Code
 			};
 			DEGlobal.RESOURCES.IMAGE[Image.name] = data;
-	}
+	},
 	createImage:function(Image){
 		var TargetImg = DEGlobal.RESOURCES.IMAGE[Image.name]
 		bmd = loadBitmapData(TargetImg.width, TargetImg.height, TargetImg.Base64Code);
@@ -17,5 +17,5 @@ var DEResourse = {
 		return obj;
 	}
 };
-//loadImageÓÃ·¨£ºDEResourse.loadImage({name:"Í¼Æ¬êÇ³Æ",width:Í¼Æ¬µÄ¿í¶È,height:Í¼Æ¬µÄ¸ß¶È,Base64Code:"Í¼Æ¬µÄBase64Âë"});
-//createImageÓÃ·¨£ºDEResourse.createImage({name:"Í¼Æ¬êÇ³Æ",x:Í¼Æ¬Ïà¶ÔÓÚ¸¸ÔªËØµÄºá×ø±ê,y:Í¼Æ¬Ïà¶ÔÓÚ¸¸ÔªËØµÄ×İ×ø±ê,lifeTime:Í¼Æ¬³ÖĞøÊ±¼ä,parent:Í¼Æ¬µÄ¸¸ÔªËØ,alpha:Ñ¡Ìî£¬Í¼Æ¬Í¸Ã÷¶È0ÎªÍ¸Ã÷1Îª²»Í¸Ã÷£¬0.5Îª°ëÍ¸Ã÷});
+//loadImageç”¨æ³•ï¼šDEResourse.loadImage({name:"å›¾ç‰‡æ˜µç§°",width:å›¾ç‰‡çš„å®½åº¦,height:å›¾ç‰‡çš„é«˜åº¦,Base64Code:"å›¾ç‰‡çš„Base64ç "});
+//createImageç”¨æ³•ï¼šDEResourse.createImage({name:"å›¾ç‰‡æ˜µç§°",x:å›¾ç‰‡ç›¸å¯¹äºçˆ¶å…ƒç´ çš„æ¨ªåæ ‡,y:å›¾ç‰‡ç›¸å¯¹äºçˆ¶å…ƒç´ çš„çºµåæ ‡,lifeTime:å›¾ç‰‡æŒç»­æ—¶é—´,parent:å›¾ç‰‡çš„çˆ¶å…ƒç´ ,alpha:é€‰å¡«ï¼Œå›¾ç‰‡é€æ˜åº¦0ä¸ºé€æ˜1ä¸ºä¸é€æ˜ï¼Œ0.5ä¸ºåŠé€æ˜});
