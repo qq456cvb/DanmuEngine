@@ -191,19 +191,33 @@ function createBitmap(bitmapData, lifeTime, scale, parent) {
 
 function createBMPObj(width, height, type, lifetime, scale, parent) {
     var obj = ObjPool.Create();
-    var raw = Global.RESOURCES.BITMAPS[type];
+    var raw = DEGlobal.RESOURCES.BITMAPS[type];
     var bmd;
-    if (Global.CACHE.BMD.hasOwnProperty(raw)) {
-        bmd = Global.CACHE.BMD[raw];
+    if (DEGlobal.CACHE.BMD.hasOwnProperty(raw)) {
+        bmd = DEGlobal.CACHE.BMD[raw];
     } else {
         bmd = loadBitmapData(width, height, raw);
-        Global.CACHE.BMD[raw] = bmd;
+        DEGlobal.CACHE.BMD[raw] = bmd;
     }
     obj.shape = createBitmap(bmd, lifetime, scale, parent);
     obj.type = type;
     obj.parent = parent;
     return obj;
 }
+
+var DEGlobal = {
+	CACHE : {
+        BMD : {}
+    }，
+	RESOURCES ： {
+		BITMAPS ：{
+			
+		},
+		IMAGES : {
+			
+		}
+	}
+}；
 /***********************************************************************/
 /***********************************************************************/
 /***********************************************************************/
