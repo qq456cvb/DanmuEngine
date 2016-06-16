@@ -2,7 +2,7 @@ var DEResourse = {
 	Image:{
 		init:function(){
 			var obj = {
-				moveImage : function(dir,distance,steps){
+				move : function(dir,distance,steps){
 					DEResourse.moveImage(this,dir,distance,steps);
 				},
 				remove : function(){
