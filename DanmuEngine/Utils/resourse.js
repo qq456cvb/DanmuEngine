@@ -6,7 +6,7 @@ var DEResourse = {
 					DEResourse.moveImage(this,dir,distance,steps);
 				},
 				remove : function(){
-					this.shape.alpha = 0;
+					ScriptManager.popEl(this.shape);
 					return;
 				}
 	
