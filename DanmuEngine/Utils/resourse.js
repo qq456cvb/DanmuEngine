@@ -1,4 +1,19 @@
 var DEResourse = {
+	Image:{
+		init:function(){
+			var obj = {
+				moveImage : function(dir,distance,steps){
+					DEResourse.moveImage(this,dir,distance,steps);
+				},
+	/*			remove : function(){
+					ScriptManager.clearEl(this.shape);
+					return;
+				}
+	*/
+			};
+			return obj;
+		}
+	},
 	loadImage:function(image){
         var data = {
             width:image.width,
@@ -20,7 +35,7 @@ var DEResourse = {
             bmd = DEBitmapLoader.loadBitmapData(TargetImg.width, TargetImg.height, TargetImg.Base64Code);
             DEGlobal.CACHE.BMD[raw] = bmd;
         }
-        var obj = {};
+        var obj = this.Image.init();
 		obj.shape = DEBitmapLoader.createBitmap(bmd, image.lifeTime, (image.scale) ? image.scale:1, image.parent);
 		obj.shape.x = image.x;
 		obj.shape.y = image.y;
