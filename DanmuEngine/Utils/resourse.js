@@ -5,11 +5,11 @@ var DEResourse = {
 				moveImage : function(dir,distance,steps){
 					DEResourse.moveImage(this,dir,distance,steps);
 				},
-	/*			remove : function(){
-					ScriptManager.clearEl(this.shape);
+				remove : function(){
+					this.shape.alpha = 0;
 					return;
 				}
-	*/
+	
 			};
 			return obj;
 		}
