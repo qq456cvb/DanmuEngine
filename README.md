@@ -16,13 +16,13 @@ Danmu Engine, nothing is impossible
 * ImageElement.move(dir:String,distance:Number = 0,steps:Number = 0):void;<br>
  使用说明：移动图片,dir处填写"right"或"left"或"up"或"down",distance处请填写每步的距离，steps请填写步数<br>
  Example:<br>
->myImage = DEResourse.createImage({name:"helloWorld",x:10,y:10,lifeTime:0,parent:0});<br>
->myImage.move("right",2,20);<br><br>
+> myImage = DEResourse.createImage({name:"helloWorld",x:10,y:10,lifeTime:0,parent:0});<br>
+> myImage.move("right",2,20);<br><br>
 * ImageElement.remove():void;<br>
  使用说明：移除已创建的图片<br>
  Example:<br>
->myImage = DEResourse.createImage({name:"helloWorld",x:10,y:10,lifeTime:0,parent:0});<br>
->myImage.remove();<br><br>
+> myImage = DEResourse.createImage({name:"helloWorld",x:10,y:10,lifeTime:0,parent:0});<br>
+> myImage.remove();<br><br>
 
 图形部分
 -------------------
