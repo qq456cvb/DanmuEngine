@@ -3,15 +3,11 @@ var DEResourse = {
 		init:function(){
 			var obj = {
 			    move: function (dir, distance, steps) {
-			        (this.entityData && distance == 0) ? DEEntity.move(this, dir, steps) : DEResourse.moveImage(this, dir, distance, steps);
+			       DEResourse.moveImage(this, dir, distance, steps);
 				},
 				remove : function(){
 					ScriptManager.popEl(this.shape);
 					return;
-				},
-				createEntity: function () {
-				    DEEntity.create(this);
-				    this.type = "Entity";
 				}
 	
 			};
