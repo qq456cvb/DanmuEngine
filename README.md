@@ -4,7 +4,8 @@ Danmu Engine, nothing is impossible
 弹幕游戏引擎，一切皆有可能
 
 # API：
-## 图片部分
+图片部分
+-----------------
 * DEResourse.loadImage(params:Object):void;<br>
  {name:"helloWorld",width:30,height:30,Base64Code:"blahblahblah"}<br>
  使用说明：加载图片，name可以自己取名，width和height必须和图片的尺寸对应，Base64Code可以去"http://tool.css-js.com/base64.html"<br>
@@ -22,7 +23,9 @@ Danmu Engine, nothing is impossible
  Example:<br>
 >myImage = DEResourse.createImage({name:"helloWorld",x:10,y:10,lifeTime:0,parent:0});<br>
 >myImage.remove();<br><br>
-## 图形部分
+
+图形部分
+-------------------
 * DEDraw.createCanvas(params:Object):Canvas<br>
  {x:0,y:0,lifeTime:0,parent:0}<br>
  使用说明：创建画布，x与y为相对于父元素的坐标，lifeTime为存在时间0为永久，parent为父元素<br><br>
