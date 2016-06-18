@@ -28,7 +28,6 @@ var Bindings = {
 };
 
 function keyDown(key) {
-    trace("here");
     for (var i = 0; i < ObjPool.objects.length; ++i) {
         var obj = ObjPool.objects[i];
         if (obj.hasOwnProperty(Bindings[key])) {
@@ -151,9 +150,9 @@ var EventManager = {
 
                     // second one
                     var x2min = (anotherObj.absPos()).x;
-                    var x2max = (anotherObj.absPos()).x + anotherObj.shape.width;
+                    var x2max = (anotherObj.absPos()).x + anotherObj.shape.width - 1;
                     var y2min = (anotherObj.absPos()).y;
-                    var y2max = (anotherObj.absPos()).y + anotherObj.shape.height;
+                    var y2max = (anotherObj.absPos()).y + anotherObj.shape.height - 1;
 
                     // check
                     if (x1max > x2min && x1min < x2max && y1max > y2min && y1min < y2max) {

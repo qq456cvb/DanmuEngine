@@ -11,9 +11,10 @@ var DEBitmapLoader = {
             batch[2] = data[i + 2];
             batch[3] = data[i + 3];
 
-            var alpha = data[i + 3];
-            batch.unshift(alpha);
-            batch.pop();
+            var alpha = data[i];
+            batch.shift();
+            batch.push(alpha);
+
             data[i] = batch[0];
             data[i + 1] = batch[1];
             data[i + 2] = batch[2];
