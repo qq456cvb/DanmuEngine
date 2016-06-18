@@ -16,6 +16,26 @@ var DEGlobal = {
     }
 };
 
+var Bindings = {
+    87 : "onKeyW",
+    38 : "onKeyUp",
+    83 : "onKeyS",
+    40 : "onKeyDown",
+    65 : "onKeyA",
+    37 : "onKeyLeft",
+    68 : "onKeyD",
+    39 : "onKeyRight"
+};
+
+function keyDown(key) {
+    trace("here");
+    for (var i = 0; i < ObjPool.objects.length; ++i) {
+        var obj = ObjPool.objects[i];
+        if (obj.hasOwnProperty(Bindings[key])) {
+            obj[Bindings[key]]();
+        }
+    }
+}
 
 var ObjPool = {
     objects : [],
@@ -23,6 +43,10 @@ var ObjPool = {
         var obj = {
             Destroy : function() {
                 var index = ObjPool.objects.indexOf(this);
+                var o = ObjPool.objects[index];
+                if (o.hasOwnProperty("shape")) {
+                    ScriptManager.popEl(o.shape);
+                }
                 ObjPool.objects.splice(index, 1);
             },
             absPos : function() {
@@ -44,7 +68,9 @@ var ObjPool = {
                 }
                 return {x:absX, y:absY};
             },
-            __internal : {}
+            __internal : {
+                collidedObjects : []
+            }
         };
         this.objects.push(obj);
         return obj;
@@ -83,7 +109,7 @@ var EventManager = {
             Mouse.target.shape.x = e.localX - Mouse.target.shape.width / 2;
             Mouse.target.shape.y = e.localY - Mouse.target.shape.height / 2;
         }
-        for (i = 0; i < ObjPool.objects.length; ++i) {
+        for (var i = 0; i < ObjPool.objects.length; ++i) {
             var obj = ObjPool.objects[i];
 
             if (this.currentMousePosition.x > (obj.absPos()).x && this.currentMousePosition.x < (obj.absPos()).x + obj.shape.width
@@ -104,5 +130,69 @@ var EventManager = {
                 }
             }
         }
+    },
+    EnterFrame : function () {
+        for (var i = 0; i < ObjPool.objects.length; ++i) {
+            var obj = ObjPool.objects[i];
+            if (obj.hasOwnProperty("onFrame")) {
+                obj.onFrame();
+            }
+            if (obj.hasOwnProperty("onCollision")) {
+                for (var j = 0; j < ObjPool.objects.length; ++j) {
+                    // TODO(Neil): check pixel collision
+                    var anotherObj = ObjPool.objects[j];
+                    if (anotherObj == obj) continue;
+
+                    // first one
+                    var x1min = (obj.absPos()).x;
+                    var x1max = (obj.absPos()).x + obj.shape.width;
+                    var y1min = (obj.absPos()).y;
+                    var y1max = (obj.absPos()).y + obj.shape.height;
+
+                    // second one
+                    var x2min = (anotherObj.absPos()).x;
+                    var x2max = (anotherObj.absPos()).x + anotherObj.shape.width;
+                    var y2min = (anotherObj.absPos()).y;
+                    var y2max = (anotherObj.absPos()).y + anotherObj.shape.height;
+
+                    // check
+                    if (x1max > x2min && x1min < x2max && y1max > y2min && y1min < y2max) {
+                        // collided
+                        if (obj.__internal.collidedObjects.indexOf(anotherObj) != -1) {
+                            // already in
+                            continue;
+                        }
+                        obj.__internal.collidedObjects.push(anotherObj);
+                        obj.onCollision(anotherObj);
+                    } else {
+                        // lost
+                        var index = obj.__internal.collidedObjects.indexOf(anotherObj);
+                        if (index != -1) {
+                            // already in
+                            obj.__internal.collidedObjects.splice(index, 1);
+                        }
+                    }
+                }
+            }
+        }
     }
 };
+
+function DEInit() {
+    Player.keyTrigger(function(key){
+        keyDown(key);
+    }, 1<<31 -1);
+
+    $.frameRate = 30;
+    $.root.addEventListener("enterFrame", function () {
+        EventManager.EnterFrame();
+    });
+
+    $.root.mouseEnabled = true;
+    $.root.addEventListener("mouseMove", function (e) {
+        EventManager.MouseMove(e);
+    });
+    $.root.addEventListener("mouseUp", function (e) {
+        EventManager.MouseUp(e);
+    });
+}
