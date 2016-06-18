@@ -23,6 +23,47 @@ var DEBitmapLoader = {
         return data;
     },
 
+    readSize : function (data) {
+        var bmd = Bitmap.createBitmapData(1, 1);
+        var output = bmd.getPixels(bmd.rect);
+        output.clear();
+        var dataBuffer = [];
+        dataBuffer.length = 4;
+        var outputBuffer = [];
+        outputBuffer.length = 3;
+        var cnt = 0;
+        var buffer = [];
+        buffer.length = 8;
+        for (var i = 0; i < data.length; i += 4) {
+            for (var j = 0; j < 4 && i + j < data.length; j++) {
+                dataBuffer[j] = this.BASE64_CHARS.indexOf(data.charAt(i + j));
+            }
+
+            outputBuffer[0] = (dataBuffer[0] << 2) + ((dataBuffer[1] & 0x30) >> 4);
+            outputBuffer[1] = ((dataBuffer[1] & 0x0f) << 4) + ((dataBuffer[2] & 0x3c) >> 2);
+            outputBuffer[2] = ((dataBuffer[2] & 0x03) << 6) + dataBuffer[3];
+            for (var k = 0; k < outputBuffer.length; k++) {
+                if (dataBuffer[k + 1] == 64) break;
+                if (cnt >= 18 && cnt < 26) { // skip bmp header
+                    buffer[cnt-18] = outputBuffer[k];
+                }
+                if (cnt >= 26) {
+                    // assume little endian
+                    var width = buffer[0] + (buffer[1] << 8 & 0xff00) + (buffer[2] << 16 & 0xff0000) + (buffer[3] << 24 & 0xff000000);
+                    var height = buffer[4] + (buffer[5] << 8 & 0xff00) + (buffer[6] << 16 & 0xff0000) + (buffer[7] << 24 & 0xff000000);
+                    // height is negative
+                    height = -height;
+
+                    return {
+                        width  : width,
+                        height : height
+                    };
+                }
+                cnt++;
+            }
+        }
+        return null;
+    },
     extract: function (data) {
         var bmd = Bitmap.createBitmapData(1, 1);
         var output = bmd.getPixels(bmd.rect);
@@ -57,9 +98,9 @@ var DEBitmapLoader = {
         return output;
     },
 
-    loadBitmapData: function (width, height, raw) {
-        var bmd = Bitmap.createBitmapData(width, height);
-        // trace((extract(raw)).length);
+    loadBitmapData: function (raw) {
+        var size = this.readSize(raw);
+        var bmd = Bitmap.createBitmapData(size.width, size.height);
         bmd.setPixels(bmd.rect, this.extract(raw));
         return bmd;
     },
