@@ -137,6 +137,23 @@ var EventManager = {
                 obj.onFrame();
             }
             if (obj.hasOwnProperty("onCollision")) {
+                var speed = {x:0, y:0};
+                if (obj.__internal.lastPosition == null) {
+                    obj.__internal.lastPosition = {
+                        x : (obj.absPos()).x,
+                        y : (obj.absPos()).y
+                    };
+                } else {
+                    // compute speed direction
+                    speed.x = (obj.absPos()).x - obj.__internal.lastPosition.x;
+                    speed.y = (obj.absPos()).y - obj.__internal.lastPosition.y;
+
+                    obj.__internal.lastPosition.x = (obj.absPos()).x;
+                    obj.__internal.lastPosition.y = (obj.absPos()).y;
+                }
+
+
+
                 for (var j = 0; j < ObjPool.objects.length; ++j) {
                     // TODO(Neil): check pixel collision
                     var anotherObj = ObjPool.objects[j];
@@ -162,7 +179,22 @@ var EventManager = {
                             continue;
                         }
                         obj.__internal.collidedObjects.push(anotherObj);
-                        obj.onCollision(anotherObj);
+
+                        // compute orientation
+                        var direction;
+                        var angle = Math.atan2(speed.y, speed.x);
+                        var PIdiv4 = 1.0 / 4.0 * Math.PI;
+                        if (angle <= 3 * PIdiv4 && angle > PIdiv4 ) {
+                            direction = "DOWN";
+                        } else if (angle <= PIdiv4 && angle > -PIdiv4) {
+                            direction = "RIGHT";
+                        } else if (angle <= -PIdiv4 && angle > -3 * PIdiv4) {
+                            direction = "UP";
+                        } else {
+                            direction = "LEFT";
+                        }
+
+                        obj.onCollision(anotherObj, direction);
                     } else {
                         // lost
                         var index = obj.__internal.collidedObjects.indexOf(anotherObj);
